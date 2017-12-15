@@ -105,7 +105,6 @@ export default class Example extends React.Component {
         enableCellSelect={true}
         rowsCount={this.getSize()}
         minHeight={500}
-        toolbar={<Toolbar enableFilter={true}/>}
         onAddFilter={this.handleFilterChange}
         onClearFilters={this.onClearFilters} />);
   }
