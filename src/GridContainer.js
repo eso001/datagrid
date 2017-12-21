@@ -1,12 +1,13 @@
 import React, {Component} from 'react'
 import DataGrid from './DataGrid'
+import Dropdown from 'react-dropdown'
+
 export default class DataGridContainer extends Component { 
     constructor(props) {
       super(props)
       const originalRows = this.createRows()
       const rows = [...originalRows]
-      this.state = {originalRows, rows, columns: this._columns}
-
+      this.state = {searchString:'', originalRows, rows, columns: this._columns}
     }
     _columns = [
       {
@@ -80,7 +81,12 @@ export default class DataGridContainer extends Component {
   
       return rows;
     }
-  
+    handleSearchChange = (e)=>{
+      e.target.value ? this.setState({searchString: e.target.value}) : this.setState({searchString: ''})
+    }
+    handleDropdown=()=>{
+
+    }
     rowGetter = (i) => {
       return this.state.rows[i];
     }
@@ -88,11 +94,8 @@ export default class DataGridContainer extends Component {
     render = () => {
       return  (
         <div>
-        <input onChange={(e)=>{
-          e.target.value
-          ? this.setState({searchString: e.target.value})
-          : this.setState({searchString: ''})
-          }}/>
+          <input onChange={()=>{}}
+        <input onChange={(e) => {this.handleSearchChange(e)}} />
           <DataGrid
             columns={this.state.columns}
             rows={this.state.rows}

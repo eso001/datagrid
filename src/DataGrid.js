@@ -12,7 +12,6 @@ export default class DataGrid extends Component {
     }
     onHeaderDrop = (source, target) => {
       const stateCopy = Object.assign({}, this.state);
-      console.log('source and target on header drop', source, target)
       const columnSourceIndex = this.state.columns.findIndex(
         i => i.key === source
       );
