@@ -1,61 +1,41 @@
 
 import ReactDataGrid from 'react-data-grid'
 import React, {Component} from 'react'
-
+import { DraggableHeader } from 'react-data-grid-addons'
+const {DraggableContainer} = DraggableHeader
 export default class DataGrid extends Component { 
     constructor(props) {
       super(props)
-      const originalRows = this.createRows()
+      const originalRows = [...props.rows]
       const rows = [...originalRows]
-      this.state = {originalRows, rows}
-
+      this.state = {originalRows, rows, columns: [...props.columns]}
     }
-    _columns = [
-      {
-        key: 'id',
-        name: 'ID',
-        resizable: true,
-        sortable: true,
-        width: 40
-      },
-      {
-        key: 'task',
-        name: 'Title',
-        sortable: true,        
-        resizable: true
-      },
-      {
-        key: 'priority',
-        name: 'Priority',
-        sortable: true,
-        resizable: true
-      },
-      {
-        key: 'issueType',
-        name: 'Issue Type',
-        sortable: true,
-        resizable: true
-      },
-      {
-        key: 'complete',
-        name: '% Complete',
-        sortable: true,
-        resizable: true
-      },
-      {
-        key: 'startDate',
-        name: 'Start Date',
-        sortable: true,
-        resizable: true
-      },
-      {
-        key: 'completeDate',
-        name: 'Expected Complete',
-        sortable: true,
-        resizable: true
-      }
-    ];
-
+    onHeaderDrop = (source, target) => {
+      const stateCopy = Object.assign({}, this.state);
+      console.log('source and target on header drop', source, target)
+      const columnSourceIndex = this.state.columns.findIndex(
+        i => i.key === source
+      );
+      const columnTargetIndex = this.state.columns.findIndex(
+        i => i.key === target
+      );
+  
+      stateCopy.columns.splice(
+        columnTargetIndex,
+        0,
+        stateCopy.columns.splice(columnSourceIndex, 1)[0]
+      );
+  
+      const emptyColumns = Object.assign({},this.state, { columns: [] });
+      this.setState(
+        emptyColumns
+      );
+  
+      const reorderedColumns = Object.assign({},this.state, { columns: stateCopy.columns });
+      this.setState(
+        reorderedColumns
+      );
+    };
     handleGridSort = (sortColumn, sortDirection) => {
       const comparer = (a, b) => {
         if (sortDirection === 'ASC') {
@@ -73,34 +53,24 @@ export default class DataGrid extends Component {
       return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toLocaleDateString();
     }
   
-    createRows = () => {
-      let rows = [];
-      for (let i = 1; i < 20000; i++) {
-        rows.push({
-          id: i,
-          task: 'Task ' + i,
-          complete: Math.min(100, Math.round(Math.random() * 110)),
-          priority: ['Critical', 'High', 'Medium', 'Low'][Math.floor((Math.random() * 3) + 1)],
-          issueType: ['Bug', 'Improvement', 'Epic', 'Story'][Math.floor((Math.random() * 3) + 1)],
-          startDate: this.getRandomDate(new Date(2015, 3, 1), new Date()),
-          completeDate: this.getRandomDate(new Date(), new Date(2016, 0, 1))
-        });
-      }
-  
-      return rows;
+    componentDidReceiveProps(nextProps){
+      console.log('nextprops', nextProps)
     }
-  
     rowGetter = (i) => {
       return this.state.rows[i];
     }
   
     render = () => {
       return  (
-        <ReactDataGrid
-          columns={this._columns}
-          onGridSort={this.handleGridSort}
-          rowGetter={this.rowGetter}
-          rowsCount={this.state.rows.length}
-          minHeight={500} />);
+        <DraggableContainer 
+        onHeaderDrop={this.onHeaderDrop}>
+          <ReactDataGrid
+            columns={this.state.columns}
+            onGridSort={this.handleGridSort}
+            rowGetter={this.rowGetter}
+            rowsCount={this.state.rows.length}
+            minHeight={500} />;
+        </DraggableContainer>
+      )
     }
 }

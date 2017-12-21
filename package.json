@@ -4,10 +4,12 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^3.3.7",
-    "react": "^16.2.0",
+    "csvjson": "^5.0.0",
+    "csvtojson": "^1.1.9",
+    "react": "^15.4.2",
     "react-data-grid": "^2.0.78",
     "react-data-grid-addons": "^2.0.78",
-    "react-dom": "^16.2.0"
+    "react-dom": "^15.4.2"
   },
   "devDependencies": {
     "react-scripts": "1.0.17"
