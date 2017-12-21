@@ -94,7 +94,7 @@ export default class DataGridContainer extends Component {
     render = () => {
       return  (
         <div>
-          <input onChange={()=>{}}
+          <input onChange={()=>{}} />
         <input onChange={(e) => {this.handleSearchChange(e)}} />
           <DataGrid
             columns={this.state.columns}
