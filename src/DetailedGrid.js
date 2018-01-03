@@ -66,18 +66,17 @@ export default class DataGridContainer extends Component {
   
     createRows = () => {
       let rows = [];
-      for (let i = 1; i < 8000; i++) {
+      for (let i = 1; i < 2000; i++) {
         rows.push({
           id: i,
           task: 'Task ' + i,
           complete: Math.min(100, Math.round(Math.random() * 110)),
-          priority: ['Critical', 'High', 'Medium', 'Low'][Math.floor((Math.random() * 3) + 1)],
-          issueType: ['Bug', 'Improvement', 'Epic', 'Story'][Math.floor((Math.random() * 3) + 1)],
+          priority: ['Critical', 'High', 'Medium'][Math.floor((Math.random() * 3) + 1)],
+          issueType: ['Bug', 'Improvement', 'Story'][Math.floor((Math.random() * 3) + 1)],
           startDate: this.getRandomDate(new Date(2015, 3, 1), new Date()),
           completeDate: this.getRandomDate(new Date(), new Date(2016, 0, 1))
         });
       }
-  
       return rows;
     }
     handleSearchChange = (e)=>{
@@ -98,7 +97,8 @@ export default class DataGridContainer extends Component {
           <DataGrid
             columns={this.state.columns}
             rows={this.state.rows}
-             />;
+             />
+            Detailed Grid
         </div>
       )
     }
